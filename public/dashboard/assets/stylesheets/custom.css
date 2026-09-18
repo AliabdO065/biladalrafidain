@@ -1,0 +1,135 @@
+ .btn-danger {
+  color: #ffffff;
+  background-color: #f5a623;
+  border-color: #f5a623;
+}
+
+.btn-danger:hover {
+  color: #ffffff;
+  background-color: #f5a623;
+  border-color: #f5a623;
+}
+
+.btn-danger:focus, .btn-danger.focus {
+  color: #ffffff;
+  background-color: #f5a623;
+  border-color: #f5a623;
+  box-shadow: 0 0 0 1px #f5a623;
+}
+
+.btn-danger.disabled, .btn-danger:disabled {
+  color: #ffffff;
+  background-color: #f5a623;
+  border-color: #f5a623;
+}
+
+.btn-danger:not(:disabled):not(.disabled):active, .btn-danger:not(:disabled):not(.disabled).active,
+.show > .btn-danger.dropdown-toggle {
+  color: #ffffff;
+  background-color: #f5a623;
+  border-color: #f5a623;
+}
+
+.btn-danger:not(:disabled):not(.disabled):active:focus, .btn-danger:not(:disabled):not(.disabled).active:focus,
+.show > .btn-danger.dropdown-toggle:focus {
+  box-shadow: 0 0 0 1px #f5a623;
+}
+
+.swal2-popup {
+  background: #1f416a !important;  /* black background */
+  color: #fff !important;       /* white text for contrast */
+}
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm{
+      background-color: #f5a623 !important;
+      border-color: #f5a623 !important;
+      box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.5)  !important;
+}
+
+.alert-danger {
+    font-weight: 900 !important;
+    color: #191927;
+    background-color: #1f416a !important;
+    border-color: #1f416a !important;
+    color: white !important;
+ }
+
+ hr{
+  background-color: #346cb0 !important;
+  opacity: 1 !important;
+  height: 6px !important;
+ }
+
+/* Bootstrap 5 dropped .form-inline entirely, so it was a no-op here — this
+   gives the label/file-input/image-preview rows their spacing back. */
+.form-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.form-inline label {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+/* "Sample content" tag (e.g. placeholder reviews) — a plain bg-warning
+   pill read as too harsh/gaudy on the dark theme. */
+.badge-sample {
+  background: rgba(245, 166, 35, 0.15);
+  color: #f5a623;
+  border: 1px solid rgba(245, 166, 35, 0.4);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: .02em;
+  padding: 0.35em 0.7em;
+}
+
+/* Settings page: section cards, so long forms with many headings stay
+   scannable and each heading visually stays with its fields. */
+html {
+  scroll-behavior: smooth;
+}
+.card {
+  scroll-margin-top: 70px;
+}
+.card > .card-header {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lk-settings-subhead {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  padding-top: 16px;
+  border-top: 1px dashed #dde3ec;
+  color: #6c7a91;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: .05em;
+}
+.lk-settings-save {
+  position: sticky;
+  bottom: 16px;
+}
+
+/* Collapsible "section heading" card (closed by default) on the
+   Services/Steps/Comparisons/Reviews/FAQs/Leads pages. */
+button.card-header.lk-collapse-toggle {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: inherit;
+  justify-content: space-between;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  color: inherit;
+  font: inherit;
+}
+.lk-collapse-toggle .lk-collapse-caret {
+  transition: transform .2s ease;
+}
+.lk-collapse-toggle:not(.collapsed) .lk-collapse-caret {
+  transform: rotate(180deg);
+}

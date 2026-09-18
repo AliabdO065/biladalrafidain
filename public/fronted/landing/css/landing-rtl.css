@@ -1,0 +1,33 @@
+/* RTL overrides for Arabic. Flexbox/Grid row order already auto-mirrors with
+   dir="rtl"; this file only fixes physical-direction margins/borders/alignment
+   that don't flip automatically. */
+
+body[dir="rtl"],
+[dir="rtl"] body {
+  font-family: "Inter", "Tahoma", "Segoe UI", Arial, sans-serif;
+}
+
+[dir="rtl"] .lk-navbar-phone i { margin-right: 0; margin-left: 6px; }
+
+[dir="rtl"] .lk-lang-menu { right: auto; left: 0; }
+
+[dir="rtl"] .lk-alert i { margin-right: 0; margin-left: 6px; }
+
+[dir="rtl"] .lk-stat { border-right: none; border-left: 1px solid var(--lk-gray-100); }
+[dir="rtl"] .lk-stat:first-child { border-left: none; }
+
+[dir="rtl"] .lk-compare th,
+[dir="rtl"] .lk-compare td { text-align: right; }
+
+[dir="rtl"] .lk-compare .yes i,
+[dir="rtl"] .lk-compare .no i { margin-right: 0; margin-left: 8px; }
+
+[dir="rtl"] .lk-faq-q { text-align: right; }
+
+[dir="rtl"] .lk-option-btn { text-align: right; }
+
+@media (max-width: 900px) {
+  /* 2-column grid makes a simple first/rest border rule ambiguous — drop
+     dividers on mobile RTL rather than risk a misplaced line. */
+  [dir="rtl"] .lk-stat { border-left: none; }
+}
