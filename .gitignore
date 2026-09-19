@@ -17,4 +17,6 @@ yarn-error.log
 /.idea
 /.vscode
 seeeeeeder.html
-/refrence
+/refrence.env.save
+.env.*.save
+*.save
