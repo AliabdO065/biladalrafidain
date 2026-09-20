@@ -265,5 +265,12 @@
     "Shipment deleted.": "Shipment deleted.",
     "Event added.": "Event added.",
     "Event deleted.": "Event deleted.",
-    "Shipments": "Shipments"
+    "Shipments": "Shipments",
+
+    "Biladalrafidain": "Biladalrafidain",
+    "404 - Page Not Found": "404 - Page Not Found",
+    "The page you are looking for doesn't exist or may have been moved.": "The page you are looking for doesn't exist or may have been moved.",
+    "Back to Home": "Back to Home",
+    "500 - Server Error": "500 - Server Error",
+    "Something went wrong on our side. Please try again in a moment.": "Something went wrong on our side. Please try again in a moment."
 }

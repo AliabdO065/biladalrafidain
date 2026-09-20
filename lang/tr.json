@@ -64,5 +64,12 @@
     "Tracking History": "Takip Geçmişi",
     "No tracking updates yet.": "Henüz takip güncellemesi yok.",
     "Company Policies": "Şirket Politikaları",
-    "No policies published yet.": "Henüz yayınlanmış politika yok."
+    "No policies published yet.": "Henüz yayınlanmış politika yok.",
+
+    "Biladalrafidain": "Biladalrafidain",
+    "404 - Page Not Found": "404 - Sayfa Bulunamadı",
+    "The page you are looking for doesn't exist or may have been moved.": "Aradığınız sayfa mevcut değil veya taşınmış olabilir.",
+    "Back to Home": "Ana Sayfaya Dön",
+    "500 - Server Error": "500 - Sunucu Hatası",
+    "Something went wrong on our side. Please try again in a moment.": "Bizim tarafımızda bir sorun oluştu. Lütfen biraz sonra tekrar deneyin."
 }

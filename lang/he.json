@@ -64,5 +64,12 @@
     "Tracking History": "היסטוריית מעקב",
     "No tracking updates yet.": "אין עדיין עדכוני מעקב.",
     "Company Policies": "מדיניות החברה",
-    "No policies published yet.": "אין עדיין מדיניות שפורסמה."
+    "No policies published yet.": "אין עדיין מדיניות שפורסמה.",
+
+    "Biladalrafidain": "בלאד אל-רפידין",
+    "404 - Page Not Found": "404 - הדף לא נמצא",
+    "The page you are looking for doesn't exist or may have been moved.": "הדף שחיפשתם אינו קיים או שהועבר.",
+    "Back to Home": "חזרה לדף הבית",
+    "500 - Server Error": "500 - שגיאת שרת",
+    "Something went wrong on our side. Please try again in a moment.": "משהו השתבש מצידנו. אנא נסו שוב בעוד רגע."
 }

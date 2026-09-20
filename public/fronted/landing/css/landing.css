@@ -49,7 +49,7 @@ a { text-decoration: none; }
 .lk-btn-primary {
   background: var(--lk-orange);
   color: #fff;
-  box-shadow: 0 8px 20px rgba(224, 120, 86, .35);
+  box-shadow: 0 8px 20px rgba(201, 147, 47, .35);
 }
 .lk-btn-primary:hover { background: var(--lk-orange-dark); transform: translateY(-1px); color:#fff; }
 .lk-btn-outline {

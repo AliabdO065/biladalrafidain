@@ -297,5 +297,12 @@
     "Shipment deleted.": "تم حذف الشحنة.",
     "Event added.": "تمت إضافة الحدث.",
     "Event deleted.": "تم حذف الحدث.",
-    "Shipments": "الشحنات"
+    "Shipments": "الشحنات",
+
+    "Biladalrafidain": "بلاد الرافدين",
+    "404 - Page Not Found": "404 - الصفحة غير موجودة",
+    "The page you are looking for doesn't exist or may have been moved.": "الصفحة التي تبحث عنها غير موجودة أو ربما تم نقلها.",
+    "Back to Home": "العودة إلى الرئيسية",
+    "500 - Server Error": "500 - خطأ في الخادم",
+    "Something went wrong on our side. Please try again in a moment.": "حدث خطأ من جانبنا. يرجى المحاولة مرة أخرى بعد قليل."
 }
