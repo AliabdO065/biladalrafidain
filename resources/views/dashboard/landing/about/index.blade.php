@@ -21,8 +21,8 @@
 
                 <div class="card mb-4">
                     <button class="card-header lk-collapse-toggle collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-about-heading" aria-expanded="false" aria-controls="collapse-about-heading">
-                        <span><i class="fa-solid fa-heading"></i> {{ __('Abschnitts-Überschrift') }}</span>
-                        <i class="fa-solid fa-chevron-down lk-collapse-caret"></i>
+                        <span><i class="fas fa-heading"></i> {{ __('Abschnitts-Überschrift') }}</span>
+                        <i class="fas fa-chevron-down lk-collapse-caret"></i>
                     </button>
                     <div class="collapse" id="collapse-about-heading">
                         <div class="card-body">
@@ -34,8 +34,8 @@
 
                 <div class="card mb-4">
                     <button class="card-header lk-collapse-toggle collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-about-owner" aria-expanded="false" aria-controls="collapse-about-owner">
-                        <span><i class="fa-solid fa-user"></i> {{ __('Inhaber') }}</span>
-                        <i class="fa-solid fa-chevron-down lk-collapse-caret"></i>
+                        <span><i class="fas fa-user"></i> {{ __('Inhaber') }}</span>
+                        <i class="fas fa-chevron-down lk-collapse-caret"></i>
                     </button>
                     <div class="collapse" id="collapse-about-owner">
                         <div class="card-body">
@@ -56,8 +56,8 @@
 
                 <div class="card mb-4">
                     <button class="card-header lk-collapse-toggle collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-about-story" aria-expanded="false" aria-controls="collapse-about-story">
-                        <span><i class="fa-solid fa-book"></i> {{ __('Firmengeschichte') }}</span>
-                        <i class="fa-solid fa-chevron-down lk-collapse-caret"></i>
+                        <span><i class="fas fa-book"></i> {{ __('Firmengeschichte') }}</span>
+                        <i class="fas fa-chevron-down lk-collapse-caret"></i>
                     </button>
                     <div class="collapse" id="collapse-about-story">
                         <div class="card-body">
@@ -68,8 +68,8 @@
 
                 <div class="card mb-4">
                     <button class="card-header lk-collapse-toggle collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-about-trust" aria-expanded="false" aria-controls="collapse-about-trust">
-                        <span><i class="fa-solid fa-circle-check"></i> {{ __('Trust-Punkte') }}</span>
-                        <i class="fa-solid fa-chevron-down lk-collapse-caret"></i>
+                        <span><i class="fas fa-check-circle"></i> {{ __('Trust-Punkte') }}</span>
+                        <i class="fas fa-chevron-down lk-collapse-caret"></i>
                     </button>
                     <div class="collapse" id="collapse-about-trust">
                         <div class="card-body">

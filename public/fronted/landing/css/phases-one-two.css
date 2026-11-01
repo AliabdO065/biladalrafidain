@@ -1,0 +1,10 @@
+/* Phases 1–2: the original marketplace styles remain unchanged for phase 4. */
+.mk-top { justify-content: space-between; gap: 1.5rem; }
+.mk-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 720px; margin-inline: auto; }
+.mk-features { grid-template-columns: minmax(0, 1fr); }
+.mk-service-grid { max-width: 1000px; margin-inline: auto; }
+.mk-home .lk-callback { margin-top: 2rem; }
+@media (max-width: 600px) {
+    .mk-top { gap: .75rem; }
+    .mk-actions { grid-template-columns: minmax(0, 1fr); }
+}

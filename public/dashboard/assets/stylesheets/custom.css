@@ -133,3 +133,34 @@ button.card-header.lk-collapse-toggle {
 .lk-collapse-toggle:not(.collapsed) .lk-collapse-caret {
   transform: rotate(180deg);
 }
+/* Operations dashboard */
+.operations-page-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:24px; }
+.operations-row-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.operations-row-actions form { margin:0; }
+.operations-table-wrap { min-width:0; }
+.operations-table-wrap table th { white-space:nowrap; }
+.operations-table-wrap table td { min-width:110px; max-width:340px; overflow-wrap:anywhere; vertical-align:middle; }
+.operations-table-wrap table td:first-child { min-width:45px; }
+.operations-table-filter { max-width:400px; }
+.operations-modal .modal-title { margin-bottom:0; }
+.operations-modal { z-index:1060; }
+.operations-modal .modal-dialog-scrollable .modal-content > form { display:flex; flex-direction:column; overflow:hidden; min-height:0; }
+.operations-modal .modal-body { overflow-y:auto; }
+html[lang="ar"] .operations-modal { direction:rtl; text-align:right; }
+html[lang="ar"] .operations-modal .btn-close { margin-left:0; margin-right:auto; }
+.operations-table-wrap .dt-container .dt-layout-row { gap:12px; flex-wrap:wrap; }
+.operations-table-wrap .dt-input { border-radius:6px; padding:6px 10px; }
+.stacked-menu .sidebar-section-label { margin-top:16px; padding-top:16px; border-top:1px solid rgba(128,128,128,.2); font-weight:700; letter-spacing:0; }
+html[lang="ar"] .page-inner { direction:rtl; text-align:right; }
+html[lang="ar"] .page-inner th { text-align:right; }
+.app-header-dark, .app-header-dark .top-bar-brand { background-color:#0e4a4d; }
+.btn-primary { background-color:#0e4a4d; border-color:#0e4a4d; }
+.btn-primary:hover { background-color:#156e6a; border-color:#156e6a; }
+.btn-outline-primary { color:#0e4a4d; border-color:#0e4a4d; }
+.btn-outline-primary:hover { background-color:#0e4a4d; border-color:#0e4a4d; }
+.shipment-stages { list-style:none; padding:0; display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin:24px 0; }
+.shipment-stages li { border-top:3px solid #dce2df; padding:12px 0; color:#68736f; }
+.shipment-stages li span { display:block; font-weight:700; margin-bottom:8px; }
+.shipment-stages .is-complete { border-color:#c9932f; color:#0e4a4d; }
+.shipment-stages [aria-current] { font-weight:700; }
+@media(max-width:600px) { .shipment-stages { grid-template-columns:1fr; } .shipment-stages li { border-top:0; border-inline-start:3px solid #dce2df; padding:8px 12px; } .shipment-stages li span { display:inline; margin-inline-end:8px; } }

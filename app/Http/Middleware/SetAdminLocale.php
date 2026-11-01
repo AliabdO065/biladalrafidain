@@ -12,7 +12,7 @@ class SetAdminLocale
 
     public function handle(Request $request, Closure $next)
     {
-        $locale = session('admin_locale');
+        $locale = session('admin_locale', session('site_locale', 'ar'));
 
         if (! $locale || ! in_array($locale, $this->available, true)) {
             $locale = 'ar';

@@ -11,6 +11,13 @@ use App\Models\LandingService;
 use App\Models\LandingSetting;
 use App\Models\LandingShipment;
 use App\Models\LandingShipmentEvent;
+use App\Models\LandingTrip;
+use App\Support\ShipmentStages;
+use App\Support\ShipmentFields;
+use App\Support\DataTableResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use App\Models\LandingStat;
 use App\Models\LandingStep;
 use App\Models\Language;
@@ -29,15 +36,17 @@ class LandingDashboardController extends Controller
 
     public function languages()
     {
-        $languages = Language::orderBy('sort_order')->get();
+        $languages = Language::supported()->orderBy('sort_order')->get();
 
         return view('dashboard.landing.languages.index', compact('languages'));
     }
 
     public function updateLanguages(Request $request)
     {
-        $languages = Language::all();
-        $enabledCodes = array_keys($request->input('enabled', []));
+        $request->validate(['enabled' => 'nullable|array']);
+        $languages = Language::supported()->get();
+        $enabledCodes = array_intersect(array_keys($request->input('enabled', []) ?? []), Language::SUPPORTED);
+        Language::whereNotIn('code', Language::SUPPORTED)->update(['is_enabled' => false, 'is_default' => false]);
 
         // Always keep the default language enabled, and never allow every language to be disabled.
         $defaultCode = optional($languages->firstWhere('is_default', true))->code;
@@ -158,8 +167,6 @@ class LandingDashboardController extends Controller
             'value' => 'required|string|max:255',
             'label.ar' => 'required|string|max:255',
             'label.en' => 'nullable|string|max:255',
-            'label.tr' => 'nullable|string|max:255',
-            'label.he' => 'nullable|string|max:255',
             'icon' => 'nullable|string|max:255',
             'sort_order' => 'nullable|integer',
         ]);
@@ -183,8 +190,6 @@ class LandingDashboardController extends Controller
             'value' => 'required|string|max:255',
             'label.ar' => 'required|string|max:255',
             'label.en' => 'nullable|string|max:255',
-            'label.tr' => 'nullable|string|max:255',
-            'label.he' => 'nullable|string|max:255',
             'icon' => 'nullable|string|max:255',
             'sort_order' => 'nullable|integer',
         ]);
@@ -220,12 +225,8 @@ class LandingDashboardController extends Controller
         $data = $request->validate([
             'title.ar' => 'required|string|max:255',
             'title.en' => 'nullable|string|max:255',
-            'title.tr' => 'nullable|string|max:255',
-            'title.he' => 'nullable|string|max:255',
             'description.ar' => 'nullable|string',
             'description.en' => 'nullable|string',
-            'description.tr' => 'nullable|string',
-            'description.he' => 'nullable|string',
             'icon' => 'nullable|string|max:255',
             'sort_order' => 'nullable|integer',
         ]);
@@ -250,12 +251,8 @@ class LandingDashboardController extends Controller
         $data = $request->validate([
             'title.ar' => 'required|string|max:255',
             'title.en' => 'nullable|string|max:255',
-            'title.tr' => 'nullable|string|max:255',
-            'title.he' => 'nullable|string|max:255',
             'description.ar' => 'nullable|string',
             'description.en' => 'nullable|string',
-            'description.tr' => 'nullable|string',
-            'description.he' => 'nullable|string',
             'icon' => 'nullable|string|max:255',
             'sort_order' => 'nullable|integer',
         ]);
@@ -298,12 +295,8 @@ class LandingDashboardController extends Controller
             'step_number' => 'required|integer|min:1|max:20',
             'title.ar' => 'required|string|max:255',
             'title.en' => 'nullable|string|max:255',
-            'title.tr' => 'nullable|string|max:255',
-            'title.he' => 'nullable|string|max:255',
             'description.ar' => 'nullable|string',
             'description.en' => 'nullable|string',
-            'description.tr' => 'nullable|string',
-            'description.he' => 'nullable|string',
             'sort_order' => 'nullable|integer',
         ]);
         $data['image'] = $this->handleUpload($request, 'image', null, 'steps');
@@ -327,12 +320,8 @@ class LandingDashboardController extends Controller
             'step_number' => 'required|integer|min:1|max:20',
             'title.ar' => 'required|string|max:255',
             'title.en' => 'nullable|string|max:255',
-            'title.tr' => 'nullable|string|max:255',
-            'title.he' => 'nullable|string|max:255',
             'description.ar' => 'nullable|string',
             'description.en' => 'nullable|string',
-            'description.tr' => 'nullable|string',
-            'description.he' => 'nullable|string',
             'sort_order' => 'nullable|integer',
         ]);
         $data['image'] = $this->handleUpload($request, 'image', $item->image, 'steps');
@@ -372,16 +361,10 @@ class LandingDashboardController extends Controller
         $data = $request->validate([
             'criterion.ar' => 'required|string|max:255',
             'criterion.en' => 'nullable|string|max:255',
-            'criterion.tr' => 'nullable|string|max:255',
-            'criterion.he' => 'nullable|string|max:255',
             'us_value.ar' => 'required|string|max:255',
             'us_value.en' => 'nullable|string|max:255',
-            'us_value.tr' => 'nullable|string|max:255',
-            'us_value.he' => 'nullable|string|max:255',
             'them_value.ar' => 'required|string|max:255',
             'them_value.en' => 'nullable|string|max:255',
-            'them_value.tr' => 'nullable|string|max:255',
-            'them_value.he' => 'nullable|string|max:255',
             'sort_order' => 'nullable|integer',
         ]);
         $data['us_is_positive'] = $request->has('us_is_positive');
@@ -405,16 +388,10 @@ class LandingDashboardController extends Controller
         $data = $request->validate([
             'criterion.ar' => 'required|string|max:255',
             'criterion.en' => 'nullable|string|max:255',
-            'criterion.tr' => 'nullable|string|max:255',
-            'criterion.he' => 'nullable|string|max:255',
             'us_value.ar' => 'required|string|max:255',
             'us_value.en' => 'nullable|string|max:255',
-            'us_value.tr' => 'nullable|string|max:255',
-            'us_value.he' => 'nullable|string|max:255',
             'them_value.ar' => 'required|string|max:255',
             'them_value.en' => 'nullable|string|max:255',
-            'them_value.tr' => 'nullable|string|max:255',
-            'them_value.he' => 'nullable|string|max:255',
             'sort_order' => 'nullable|integer',
         ]);
         $data['us_is_positive'] = $request->has('us_is_positive');
@@ -454,8 +431,6 @@ class LandingDashboardController extends Controller
             'review_date' => 'nullable|date',
             'review_text.ar' => 'required|string',
             'review_text.en' => 'nullable|string',
-            'review_text.tr' => 'nullable|string',
-            'review_text.he' => 'nullable|string',
             'sort_order' => 'nullable|integer',
         ]);
         $data['is_placeholder'] = $request->has('is_placeholder');
@@ -482,8 +457,6 @@ class LandingDashboardController extends Controller
             'review_date' => 'nullable|date',
             'review_text.ar' => 'required|string',
             'review_text.en' => 'nullable|string',
-            'review_text.tr' => 'nullable|string',
-            'review_text.he' => 'nullable|string',
             'sort_order' => 'nullable|integer',
         ]);
         $data['is_placeholder'] = $request->has('is_placeholder');
@@ -524,12 +497,8 @@ class LandingDashboardController extends Controller
         $data = $request->validate([
             'question.ar' => 'required|string|max:255',
             'question.en' => 'nullable|string|max:255',
-            'question.tr' => 'nullable|string|max:255',
-            'question.he' => 'nullable|string|max:255',
             'answer.ar' => 'required|string',
             'answer.en' => 'nullable|string',
-            'answer.tr' => 'nullable|string',
-            'answer.he' => 'nullable|string',
             'sort_order' => 'nullable|integer',
         ]);
 
@@ -551,12 +520,8 @@ class LandingDashboardController extends Controller
         $data = $request->validate([
             'question.ar' => 'required|string|max:255',
             'question.en' => 'nullable|string|max:255',
-            'question.tr' => 'nullable|string|max:255',
-            'question.he' => 'nullable|string|max:255',
             'answer.ar' => 'required|string',
             'answer.en' => 'nullable|string',
-            'answer.tr' => 'nullable|string',
-            'answer.he' => 'nullable|string',
             'sort_order' => 'nullable|integer',
         ]);
         $item->update($data);
@@ -608,12 +573,8 @@ class LandingDashboardController extends Controller
             'slug' => 'required|string|max:255|alpha_dash|unique:landing_policies,slug',
             'title.ar' => 'required|string|max:255',
             'title.en' => 'nullable|string|max:255',
-            'title.tr' => 'nullable|string|max:255',
-            'title.he' => 'nullable|string|max:255',
             'body.ar' => 'nullable|string',
             'body.en' => 'nullable|string',
-            'body.tr' => 'nullable|string',
-            'body.he' => 'nullable|string',
             'sort_order' => 'nullable|integer',
         ]);
         $data['is_active'] = $request->has('is_active');
@@ -637,12 +598,8 @@ class LandingDashboardController extends Controller
             'slug' => 'required|string|max:255|alpha_dash|unique:landing_policies,slug,' . $item->id,
             'title.ar' => 'required|string|max:255',
             'title.en' => 'nullable|string|max:255',
-            'title.tr' => 'nullable|string|max:255',
-            'title.he' => 'nullable|string|max:255',
             'body.ar' => 'nullable|string',
             'body.en' => 'nullable|string',
-            'body.tr' => 'nullable|string',
-            'body.he' => 'nullable|string',
             'sort_order' => 'nullable|integer',
         ]);
         $data['is_active'] = $request->has('is_active');
@@ -660,55 +617,135 @@ class LandingDashboardController extends Controller
 
     // ----- Shipments (tracking) -----
 
-    public function shipments()
+    public function shipments(Request $request)
     {
-        $items = LandingShipment::latest()->get();
+        $shipmentFilters = $request->validate(['trip_id' => 'nullable|integer|exists:landing_trips,id', 'import_id' => 'nullable|integer|exists:shipment_imports,id', 'attention' => 'nullable|in:financial']);
+        $trips = LandingTrip::latest()->get();
 
-        return view('dashboard.landing.shipments.all', compact('items'));
+        return view('dashboard.landing.shipments.all', compact('trips', 'shipmentFilters'));
+    }
+
+    public function shipmentsData(Request $request)
+    {
+        $request->validate(['trip_id' => 'nullable|integer|exists:landing_trips,id', 'import_id' => 'nullable|integer|exists:shipment_imports,id', 'attention' => 'nullable|in:financial']);
+        $query = LandingShipment::select('landing_shipments.*')->with('trip')
+            ->leftJoin('landing_trips', 'landing_trips.id', '=', 'landing_shipments.trip_id');
+        if ($request->filled('trip_id')) {
+            $query->where('landing_shipments.trip_id', $request->input('trip_id'));
+        }
+        if ($request->filled('import_id')) {
+            $query->where('landing_shipments.import_id', $request->input('import_id'));
+        }
+        if ($request->input('attention') === 'financial') {
+            $query->where(fn ($q) => $q->whereNull('shipping_fee')->orWhereNull('paid_amount')->orWhereNull('currency'));
+        }
+        $detailFields = array_keys(ShipmentFields::labels());
+        $columns = array_merge(['landing_shipments.id', 'landing_shipments.tracking_code', 'landing_trips.reference'],
+            array_map(fn ($field) => 'landing_shipments.' . $field, $detailFields),
+            ['landing_shipments.origin', 'landing_shipments.destination', 'landing_shipments.estimated_delivery',
+                DB::raw('COALESCE(landing_trips.status, landing_shipments.status)'), 'landing_shipments.created_at']);
+        $searchable = array_merge(['landing_shipments.tracking_code', 'landing_trips.reference'],
+            array_map(fn ($field) => 'landing_shipments.' . $field, $detailFields), ['landing_shipments.origin', 'landing_shipments.destination']);
+
+        return DataTableResponse::make($request, $query, $columns, $searchable, function ($item) use ($detailFields) {
+            $row = $item->only($detailFields);
+            $row['receipt_date'] = optional($item->receipt_date)->format('Y-m-d');
+
+            return array_merge($row, [
+                'id' => $item->id, 'tracking_code' => $item->tracking_code, 'trip_reference' => optional($item->trip)->reference,
+                'origin' => $item->trip ? $item->trip->origin : $item->origin,
+                'destination' => $item->city ?: ($item->trip ? $item->trip->destination : $item->destination),
+                'estimated_delivery' => optional($item->trip ? $item->trip->estimated_delivery : $item->estimated_delivery)->format('Y-m-d'),
+                'status' => ShipmentStages::label($item->current_status), 'created_at' => $item->created_at->format('Y-m-d H:i'),
+                'status_code' => $item->current_status, 'trip_url' => $item->trip ? route('dashboard.trips.show', $item->trip) : null,
+                'actions' => view('dashboard.landing.shipments._actions', compact('item'))->render(),
+            ]);
+        }, [['column' => DB::raw('COALESCE(landing_trips.status, landing_shipments.status)'), 'labels' => ShipmentStages::labels()]]);
     }
 
     public function addShipment()
     {
-        return view('dashboard.landing.shipments.add');
+        return redirect()->route('dashboard.landing.shipments', ['create' => 1, 'trip_id' => request('trip_id')]);
     }
 
     public function storeShipment(Request $request)
     {
-        $data = $request->validate([
-            'tracking_code' => 'required|string|max:255|unique:landing_shipments,tracking_code',
+        $data = $request->validateWithBag('shipmentCreate', array_merge(ShipmentFields::rules(), [
+            'tracking_code' => 'nullable|string|max:191|unique:landing_shipments,tracking_code',
+            'trip_id' => 'nullable|exists:landing_trips,id',
             'sender_name' => 'nullable|string|max:255',
             'receiver_name' => 'nullable|string|max:255',
             'origin' => 'nullable|string|max:255',
             'destination' => 'nullable|string|max:255',
-            'status' => 'required|string|max:255',
+            'status' => ['required', Rule::in(array_keys(ShipmentStages::labels()))],
             'estimated_delivery' => 'nullable|date',
-        ]);
+        ]));
 
-        LandingShipment::create($data);
+        $data['tracking_code'] = $data['tracking_code'] ?? 'BR-' . strtoupper(Str::random(16));
+        $shipment = DB::transaction(function () use ($data) {
+            if (! empty($data['trip_id'])) {
+                $trip = LandingTrip::lockForUpdate()->findOrFail($data['trip_id']);
+                $data['origin'] = $trip->origin;
+                $data['destination'] = $data['city'] ?? $trip->destination;
+                $data['status'] = $trip->status;
+            }
+            $shipment = LandingShipment::create($data);
+            $shipment->events()->create(['status' => $data['status'], 'happened_at' => now()]);
+            return $shipment;
+        });
 
-        return redirect()->route('dashboard.landing.shipments')->with('success', __('Shipment added.'));
+        return redirect()->route('dashboard.landing.shipments', array_filter(['trip_id' => $shipment->trip_id]))->with('success', __('Shipment added.'));
     }
 
     public function editShipment($id)
     {
-        $item = LandingShipment::with('events')->findOrFail($id);
+        $item = LandingShipment::with('events', 'trip')->findOrFail($id);
+        $trips = LandingTrip::latest()->get();
+        $contact = filled($item->merchant_number) ? \App\Models\TradingContact::where('number', $item->merchant_number)->first() : null;
 
-        return view('dashboard.landing.shipments.edit', compact('item'));
+        return view('dashboard.landing.shipments.edit', compact('item', 'trips', 'contact'));
     }
 
     public function updateShipment(Request $request, $id)
     {
         $item = LandingShipment::findOrFail($id);
-        $data = $request->validate([
-            'tracking_code' => 'required|string|max:255|unique:landing_shipments,tracking_code,' . $item->id,
+        $data = $request->validate(array_merge(ShipmentFields::rules(), [
+            'tracking_code' => 'required|string|max:191|unique:landing_shipments,tracking_code,' . $item->id,
+            'trip_id' => 'nullable|exists:landing_trips,id',
             'sender_name' => 'nullable|string|max:255',
             'receiver_name' => 'nullable|string|max:255',
             'origin' => 'nullable|string|max:255',
             'destination' => 'nullable|string|max:255',
-            'status' => 'required|string|max:255',
+            'status' => ['required', Rule::in(array_merge(array_keys(ShipmentStages::labels()), ['on_hold']))],
             'estimated_delivery' => 'nullable|date',
-        ]);
-        $item->update($data);
+        ]));
+        unset($data['status']);
+        $data['trip_id'] = array_key_exists('trip_id', $data) ? $data['trip_id'] : $item->trip_id;
+        DB::transaction(function () use ($item, $data) {
+            // Lock trips before their shipment, matching trip statement preparation.
+            $tripIds = array_unique(array_filter([$item->trip_id, $data['trip_id'] ?? null]));
+            $lockedTrips = LandingTrip::whereIn('id', $tripIds)->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+            $locked = LandingShipment::lockForUpdate()->findOrFail($item->id);
+            if ((int) $locked->trip_id !== (int) $item->trip_id) {
+                throw ValidationException::withMessages(['trip_id' => __('flow.shipment_changed')]);
+            }
+            $oldStatus = $locked->trip_id ? $lockedTrips->get($locked->trip_id)->status : $locked->status;
+            if (! empty($data['trip_id'])) {
+                $trip = $lockedTrips->get($data['trip_id']);
+                $data['origin'] = $trip->origin;
+                $data['destination'] = $data['city'] ?? $trip->destination;
+                $data['status'] = $trip->status;
+            } elseif ($locked->trip_id) {
+                // Detaching retains the actual current stage instead of resurrecting the old standalone status.
+                $data['status'] = $oldStatus;
+                $data['origin'] = $lockedTrips->get($locked->trip_id)->origin;
+                $data['destination'] = $data['city'] ?? $lockedTrips->get($locked->trip_id)->destination;
+            }
+            $locked->update($data);
+            if (($oldStatus !== $locked->status && ! empty($data['trip_id'])) || ($item->trip_id && empty($data['trip_id']))) {
+                $locked->events()->create(['status' => $locked->status, 'happened_at' => now()]);
+            }
+        });
 
         return redirect()->route('dashboard.landing.shipments.edit', $item->id)->with('success', __('Shipment updated.'));
     }
@@ -720,28 +757,53 @@ class LandingDashboardController extends Controller
         return redirect()->route('dashboard.landing.shipments')->with('success', __('Shipment deleted.'));
     }
 
+    public function advanceShipment(Request $request, $id)
+    {
+        $request->validate(['expected_status' => 'required|string']);
+        DB::transaction(function () use ($request, $id) {
+            $shipment = LandingShipment::lockForUpdate()->findOrFail($id);
+            $next = ShipmentStages::next($shipment->status);
+            if ($shipment->trip_id || ! $next || $shipment->status !== $request->input('expected_status')) {
+                throw ValidationException::withMessages(['status' => __('Cannot advance this shipment. Refresh the page or update its trip.')]);
+            }
+            $shipment->update(['status' => $next]);
+            $shipment->events()->create(['status' => $next, 'happened_at' => now()]);
+        });
+
+        return back()->with('success', __('Shipment updated.'));
+    }
+
     public function storeShipmentEvent(Request $request, $id)
     {
-        $shipment = LandingShipment::findOrFail($id);
         $data = $request->validate([
-            'status' => 'required|string|max:255',
+            'status' => ['required', Rule::in(array_keys(ShipmentStages::labels()))],
             'note.ar' => 'nullable|string|max:255',
             'note.en' => 'nullable|string|max:255',
-            'note.tr' => 'nullable|string|max:255',
-            'note.he' => 'nullable|string|max:255',
             'happened_at' => 'required|date',
         ]);
-        $data['shipment_id'] = $shipment->id;
-
-        LandingShipmentEvent::create($data);
-        $shipment->update(['status' => $data['status']]);
+        $shipment = DB::transaction(function () use ($id, $data) {
+            $shipment = LandingShipment::lockForUpdate()->findOrFail($id);
+            if ($shipment->trip_id || ShipmentStages::next($shipment->status) !== $data['status']) {
+                throw ValidationException::withMessages(['status' => __('Cannot advance this shipment. Refresh the page or update its trip.')]);
+            }
+            $shipment->events()->create($data);
+            $shipment->update(['status' => $data['status']]);
+            return $shipment;
+        });
 
         return redirect()->route('dashboard.landing.shipments.edit', $shipment->id)->with('success', __('Event added.'));
     }
 
     public function deleteShipmentEvent($id, $eventId)
     {
-        LandingShipmentEvent::where('shipment_id', $id)->findOrFail($eventId)->delete();
+        DB::transaction(function () use ($id, $eventId) {
+            $shipment = LandingShipment::lockForUpdate()->findOrFail($id);
+            $event = $shipment->events()->findOrFail($eventId);
+            if ($shipment->trip_id || $shipment->events()->reorder()->latest('id')->value('id') === $event->id) {
+                throw ValidationException::withMessages(['status' => __('flow.history_required')]);
+            }
+            $event->delete();
+        });
 
         return redirect()->route('dashboard.landing.shipments.edit', $id)->with('success', __('Event deleted.'));
     }

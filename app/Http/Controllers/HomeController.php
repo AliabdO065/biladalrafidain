@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LandingFaq;
 use App\Models\LandingLead;
-use App\Models\LandingReview;
-use App\Models\LandingService;
+use App\Models\LandingTrip;
+use App\Models\LandingShipment;
+use App\Models\Merchant;
 
 class HomeController extends Controller
 {
@@ -27,11 +27,20 @@ class HomeController extends Controller
 
     public function index()
     {
-        $servicesCount = LandingService::count();
-        $reviewsCount = LandingReview::count();
-        $faqsCount = LandingFaq::count();
+        $tripsCount = LandingTrip::where('status', '!=', 'delivered')->count();
+        $shipmentsCount = LandingShipment::count();
+        // Phase 3 deferred: $merchantsCount = LandingShipment::whereNotNull('account_key')->distinct()->count('account_key');
+        $merchantsCount = 0;
         $leadsCount = LandingLead::count();
+        $attention = [
+            'financial' => LandingShipment::where(fn ($q) => $q->whereNull('shipping_fee')->orWhereNull('paid_amount')->orWhereNull('currency'))->count(),
+            // Phase 3/4 attention counters retained for later activation.
+            // 'contacts' => \App\Models\TradingContact::where(fn ($q) => $q->whereNull('phone')->orWhere('phone', '')->orWhere('phone_conflict', true)->orWhere('opt_in', false))->count(),
+            // 'failed' => \App\Models\WhatsappMessage::where('status', 'failed')->count(),
+            // 'reviews' => \App\Models\FactoryAccount::where('status', 'pending')->count() + \App\Models\CatalogItem::where('status', 'pending')->count(),
+        ];
+        $recentTrips = LandingTrip::withCount('shipments')->latest('id')->limit(5)->get();
 
-        return view('dashboard.index', compact('servicesCount', 'reviewsCount', 'faqsCount', 'leadsCount'));
+        return view('dashboard.index', compact('tripsCount', 'shipmentsCount', 'merchantsCount', 'leadsCount', 'attention', 'recentTrips'));
     }
 }

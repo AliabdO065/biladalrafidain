@@ -1,80 +1,35 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
-    <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0e4a4d">
+    <title>{{ __('Login') }} — {{ __('Biladalrafidain') }}</title>
+    <link rel="stylesheet" href="{{ asset('dashboard/assets/stylesheets/login.css') }}?v={{ filemtime(public_path('dashboard/assets/stylesheets/login.css')) }}">
+    <script src="{{ asset('dashboard/assets/javascript/login.js') }}?v={{ filemtime(public_path('dashboard/assets/javascript/login.js')) }}" defer></script>
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <main class="py-4">
+    <div class="auth-page">
+        <header class="auth-header">
+            <a class="auth-brand" href="{{ route('fronted.index') }}" aria-label="{{ __('Biladalrafidain') }}">
+                <span class="auth-brand-mark">@include('auth._icon', ['icon' => 'ship'])</span>
+                <span><strong>{{ __('Biladalrafidain') }}</strong><small>{{ __('Shipping & Logistics') }}</small></span>
+            </a>
+            <nav class="auth-languages" aria-label="{{ __('Languages') }}">
+                @foreach(['ar' => 'العربية', 'en' => 'English'] as $code => $label)
+                    <a href="{{ route('login.setLocale', $code) }}" lang="{{ $code }}" @if(app()->getLocale() === $code) aria-current="page" @endif>{{ $label }}</a>
+                @endforeach
+            </nav>
+        </header>
+        <main class="auth-shell">
             @yield('content')
         </main>
+        <footer class="auth-footer">
+            <span>© {{ now()->year }} {{ __('Biladalrafidain') }}. {{ __('All Rights Reserved') }}</span>
+            <span>{{ __('Shipping & Customs Clearance') }}</span>
+        </footer>
     </div>
 </body>
 </html>

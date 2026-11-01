@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\DB;
 
 class LandingSeeder extends Seeder
 {
-    protected function t(string $ar, string $en, string $tr, string $he): string
+    protected function t(string $ar, string $en, string ...$legacyTranslations): string
     {
-        return json_encode(['ar' => $ar, 'en' => $en, 'tr' => $tr, 'he' => $he], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        return json_encode(['ar' => $ar, 'en' => $en], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 
     public function run(): void
@@ -18,8 +18,6 @@ class LandingSeeder extends Seeder
             DB::table('languages')->insert([
                 ['code' => 'ar', 'name' => 'Arabic', 'native_name' => 'العربية', 'is_enabled' => true, 'is_default' => true, 'sort_order' => 1, 'created_at' => now(), 'updated_at' => now()],
                 ['code' => 'en', 'name' => 'English', 'native_name' => 'English', 'is_enabled' => true, 'is_default' => false, 'sort_order' => 2, 'created_at' => now(), 'updated_at' => now()],
-                ['code' => 'tr', 'name' => 'Turkish', 'native_name' => 'Türkçe', 'is_enabled' => true, 'is_default' => false, 'sort_order' => 3, 'created_at' => now(), 'updated_at' => now()],
-                ['code' => 'he', 'name' => 'Hebrew', 'native_name' => 'עברית', 'is_enabled' => true, 'is_default' => false, 'sort_order' => 4, 'created_at' => now(), 'updated_at' => now()],
             ]);
         }
 

@@ -9,8 +9,8 @@
 
             <div class="card mb-4">
                 <button class="card-header lk-collapse-toggle collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#heading-form-body" aria-expanded="false" aria-controls="heading-form-body">
-                    <span><i class="fa-solid fa-house"></i> {{ __('Hero-Bereich') }}</span>
-                    <i class="fa-solid fa-chevron-down lk-collapse-caret"></i>
+                    <span><i class="fas fa-home"></i> {{ __('Hero-Bereich') }}</span>
+                    <i class="fas fa-chevron-down lk-collapse-caret"></i>
                 </button>
                 <div class="collapse" id="heading-form-body">
                     <div class="card-body">

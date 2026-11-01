@@ -20,16 +20,21 @@ class LandingController extends Controller
     public function index()
     {
         $settings = LandingSetting::first();
-        $stats = LandingStat::orderBy('sort_order')->get();
-        $services = LandingService::where('is_active', true)->orderBy('sort_order')->get();
-        $steps = LandingStep::orderBy('sort_order')->get();
-        $comparisons = LandingComparison::orderBy('sort_order')->get();
-        $reviews = LandingReview::orderBy('sort_order')->get();
-        $faqs = LandingFaq::orderBy('sort_order')->get();
-
-        return view('fronted.landing.index', compact(
-            'settings', 'stats', 'services', 'steps', 'comparisons', 'reviews', 'faqs'
-        ));
+        /* Phase 4 catalogue queries retained for later activation.
+        $categories = \App\Models\CatalogCategory::available()->whereNull('parent_id')->orderBy('id')->limit(12)->get();
+        $products = \App\Models\CatalogItem::published()->with(['factory', 'category', 'photos'])->latest('id')->limit(4)->get();
+        $factories = \App\Models\FactoryAccount::where('status', 'approved')->latest('id')->limit(4)->get();
+        $factoryCovers = $factories->mapWithKeys(fn ($factory) => [
+            $factory->id => \App\Models\CatalogPhoto::whereHas('item', fn ($q) => $q->published()->where('factory_id', $factory->id))->latest('id')->first(),
+        ]);
+        $marketCounts = [
+            'factories' => \App\Models\FactoryAccount::where('status', 'approved')->count(),
+            'products' => \App\Models\CatalogItem::published()->count(),
+            'categories' => \App\Models\CatalogCategory::available()->count(),
+        ];
+        return view('fronted.landing.index', compact('settings', 'categories', 'products', 'factories', 'factoryCovers', 'marketCounts'));
+        */
+        return view('fronted.landing.index', compact('settings'));
     }
 
     public function submitCallback(Request $request)
@@ -54,6 +59,7 @@ class LandingController extends Controller
 
     public function tracking(Request $request)
     {
+        $request->validate(['code' => 'nullable|string|max:191']);
         $settings = LandingSetting::first();
         $shipment = null;
         $notFound = false;
@@ -61,7 +67,7 @@ class LandingController extends Controller
         $code = trim((string) $request->query('code', ''));
 
         if ($code !== '') {
-            $shipment = LandingShipment::with('events')->where('tracking_code', $code)->first();
+            $shipment = LandingShipment::with('events', 'trip.events')->where('tracking_code', $code)->first();
             $notFound = ! $shipment;
         }
 
@@ -78,7 +84,7 @@ class LandingController extends Controller
 
     public function setLocale(string $code)
     {
-        if (Language::where('code', $code)->where('is_enabled', true)->exists()) {
+        if (Language::supported()->where('code', $code)->where('is_enabled', true)->exists()) {
             session(['site_locale' => $code]);
         }
 

@@ -1,6 +1,6 @@
 @php
     // Expects: $name (input base name, e.g. "title"), $label, $values (assoc array
-    // code=>text), optional $type ('text'|'textarea'), $rows, $required (bool, applies to de only).
+    // code=>text), optional $type ('text'|'textarea'), $rows, $required (bool, applies to Arabic).
     $type = $type ?? 'text';
     $rows = $rows ?? 3;
     $required = $required ?? true;
@@ -8,8 +8,6 @@
     $langs = [
         'ar' => 'العربية',
         'en' => 'English',
-        'tr' => 'Türkçe',
-        'he' => 'עברית',
     ];
 @endphp
 <div class="mb-3">

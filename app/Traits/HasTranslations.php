@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Models\Language;
+
 trait HasTranslations
 {
     /**
@@ -19,13 +21,14 @@ trait HasTranslations
     }
 
     /**
-     * Encode an array value (e.g. ['ar' => .., 'en' => .., 'tr' => ..]
+     * Encode an array value (e.g. ['ar' => .., 'en' => ..])
      * posted by a tabbed admin form) into the JSON column for a
      * translatable attribute. Non-array values pass through untouched.
      */
     public function setAttribute($key, $value)
     {
         if (in_array($key, $this->translatable ?? [], true) && is_array($value)) {
+            $value = array_replace($this->translationsFor($key), array_intersect_key($value, array_flip(Language::SUPPORTED)));
             // JSON_INVALID_UTF8_SUBSTITUTE guards against json_encode() silently
             // returning false (which would otherwise get stored as the string "0")
             // when a submitted value contains malformed multi-byte sequences.
@@ -39,8 +42,9 @@ trait HasTranslations
     public function getTranslation(string $field, ?string $locale = null): ?string
     {
         $locale = $locale ?: app()->getLocale();
-        $all = $this->translationsFor($field);
-        $default = config('app.fallback_locale', 'ar');
+        $locale = in_array($locale, Language::SUPPORTED, true) ? $locale : 'ar';
+        $all = array_intersect_key($this->translationsFor($field), array_flip(Language::SUPPORTED));
+        $default = in_array(config('app.fallback_locale'), Language::SUPPORTED, true) ? config('app.fallback_locale') : 'ar';
 
         // An empty string means "not translated yet" (e.g. an optional language
         // tab left blank on an add/edit form), not "translated to nothing" — so

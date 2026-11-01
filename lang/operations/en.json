@@ -1,0 +1,9 @@
+{
+    "Shipment account message": "Hello :name,\nYour shipment account with Biladalrafidain\nScope: :period\nShipments: :count\nShipping fees: :fee :currency\nCollected: :paid :currency\nRemaining balance: :balance :currency\nPlease contact us for any questions.",
+    "Merchant account message": "Hello :name,\nYour account statement with Biladalrafidain\nPeriod: :period\nAccount: :amount :currency\nDetails: :details\nPlease contact us for any questions.",
+    "Service hinzugefügt.": "Service added.",
+    "Schritt hinzugefügt.": "Step added.",
+    "Zeile hinzugefügt.": "Row added.",
+    "Bewertung hinzugefügt.": "Review added.",
+    "Frage hinzugefügt.": "Question added."
+}

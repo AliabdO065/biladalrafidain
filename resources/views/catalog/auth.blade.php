@@ -1,0 +1,11 @@
+@extends('catalog.layout')
+@section('catalog-content')
+<div class="catalog-auth"><div class="catalog-auth-intro"><span class="catalog-eyebrow">{{ __('catalog.portal') }}</span><h1>{{ __('catalog.'.$mode) }}</h1><p>{{ __('catalog.'.($mode==='register'?'register_hint':'login_hint')) }}</p><span class="fa-solid fa-industry catalog-auth-icon" aria-hidden="true"></span></div>
+<form method="POST" action="{{ route('factory.'.$mode.'.submit') }}" class="catalog-form">@csrf
+@if($mode==='register')<label for="factory-name">{{ __('catalog.name') }}</label><input id="factory-name" name="name" value="{{ old('name') }}" required maxlength="191" autocomplete="organization"><label for="factory-phone">{{ __('catalog.phone') }}</label><input id="factory-phone" name="phone" value="{{ old('phone') }}" required maxlength="30" dir="ltr" autocomplete="tel">@endif
+<label for="factory-email">{{ __('catalog.email') }}</label><input id="factory-email" type="email" name="email" value="{{ old('email') }}" required maxlength="191" dir="ltr" autocomplete="username">
+<label for="factory-password">{{ __('catalog.password') }}</label><input id="factory-password" type="password" name="password" required @if($mode==='register') minlength="10" @endif maxlength="128" autocomplete="{{ $mode==='register'?'new-password':'current-password' }}">
+@if($mode==='register')<small>{{ __('catalog.password_hint') }}</small><label for="factory-confirm">{{ __('catalog.confirm_password') }}</label><input id="factory-confirm" type="password" name="password_confirmation" required minlength="10" maxlength="128" autocomplete="new-password"><p class="catalog-disclaimer">{{ __('catalog.public_contact') }} {{ __('catalog.phone_hint') }}</p><label class="catalog-check"><input type="checkbox" name="terms" value="1" required> {{ __('catalog.terms') }}</label>@else<label class="catalog-check"><input type="checkbox" name="remember" value="1"> {{ __('catalog.remember') }}</label>@endif
+<button class="catalog-button">{{ __('catalog.'.$mode) }}</button><a href="{{ route('factory.'.($mode==='register'?'login':'register')) }}">{{ __('catalog.'.($mode==='register'?'have_account':'new_account')) }}</a>@if($mode==='login')<p class="catalog-disclaimer">{{ __('catalog.forgot') }}</p>@endif
+</form></div>
+@endsection

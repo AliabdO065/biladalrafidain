@@ -1,0 +1,10 @@
+@extends('dashboard.layouts.layout')
+@section('content')
+<div class="wrapper"><div class="page"><div class="page-inner operations-detail-page">
+<h1 class="h3 mb-4">{{ $contact->name }} · {{ __('trade.movements') }}</h1>@include('dashboard.trade._nav')
+<div class="alert alert-warning">{{ __('trade.no_balance') }}</div><p class="text-muted">{{ __('trade.import_totals') }}</p>
+<div class="flow-context"><div><strong>{{ $contact->name }}</strong><small>{{ $contact->number }} · {{ __('flow.contact_scope') }}</small></div><div class="operations-row-actions"><a class="btn btn-light" href="{{ route('dashboard.trade.contacts',['search'=>$contact->number]) }}">{{ __('flow.review_contacts') }}</a><a class="btn btn-outline-primary" href="{{ route('dashboard.trade.messages',['contact_id'=>$contact->id]) }}">{{ __('flow.contact_messages') }}</a>@if($shipmentAccount)<a class="btn btn-primary" href="{{ route('dashboard.accounts.merchant',array_filter(['key'=>$shipmentAccount->account_key,'bucket'=>$shipmentAccount->currency])) }}">{{ __('flow.shipping_account') }}</a>@endif</div></div>
+<div class="row">@foreach($totals as $total)<div class="col-md-4 mb-3"><div class="card"><div class="card-body"><h2 class="h6">{{ __('trade.'.$total->kind) }}</h2><strong class="h4">{{ $total->amount }} {{ $total->currency }}</strong></div></div></div>@endforeach</div>
+<div class="card"><div class="table-responsive"><table class="table mb-0"><thead><tr>@foreach(['reference','date','kind','supplier','amount','trip'] as $key)<th>{{ __('trade.'.$key) }}</th>@endforeach</tr></thead><tbody>@forelse($vouchers as $voucher)<tr><td>{{ $voucher->reference }}</td><td>{{ $voucher->occurred_at->format('Y-m-d') }}</td><td>{{ __('trade.'.$voucher->kind) }}</td><td>{{ $voucher->supplier }}</td><td>{{ $voucher->amount }} {{ $voucher->currency }}</td><td>{{ $voucher->trip_reference }}</td></tr>@empty<tr><td colspan="6">{{ __('trade.empty') }}</td></tr>@endforelse</tbody></table></div></div><div class="operations-pagination">{{ $vouchers->links() }}</div>
+</div></div></div>
+@endsection

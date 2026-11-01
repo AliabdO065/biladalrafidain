@@ -13,13 +13,14 @@ class SetLocale
 {
     public function handle(Request $request, Closure $next)
     {
-        $enabled = Language::where('is_enabled', true)->orderBy('sort_order')->get();
+        $enabled = Language::supported()->where('is_enabled', true)->orderBy('sort_order')->get();
         $default = $enabled->firstWhere('is_default', true) ?? $enabled->first();
 
         $locale = session('site_locale');
         if (! $locale || ! $enabled->contains('code', $locale)) {
-            $locale = $default->code ?? config('app.fallback_locale');
+            $locale = $default->code ?? 'ar';
         }
+        session(['site_locale' => $locale]);
 
         App::setLocale($locale);
 

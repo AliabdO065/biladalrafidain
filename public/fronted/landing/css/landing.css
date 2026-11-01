@@ -12,6 +12,13 @@
   --lk-navbar-height: 68px;
 }
 
+.lk-tracking-stages { list-style:none; padding:0; display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin:24px 0; }
+.lk-tracking-stages li { color:var(--lk-gray-600); text-align:center; font-size:.85rem; border-top:3px solid var(--lk-gray-100); padding-top:12px; }
+.lk-tracking-stages li span { display:block; font-weight:800; margin-bottom:8px; }
+.lk-tracking-stages li.is-complete { color:var(--lk-navy); border-color:var(--lk-orange); }
+.lk-tracking-stages li[aria-current] { font-weight:800; }
+@media(max-width:600px) { .lk-tracking-stages { grid-template-columns:1fr; } .lk-tracking-stages li { text-align:start; border-top:0; border-inline-start:3px solid var(--lk-gray-100); padding:8px 12px; } .lk-tracking-stages li span { display:inline; margin-inline-end:10px; } }
+
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }

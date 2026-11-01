@@ -36,6 +36,7 @@ return [
     */
 
     'guards' => [
+        'factory' => ['driver'=>'session','provider'=>'factories'],
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -60,6 +61,7 @@ return [
     */
 
     'providers' => [
+        'factories' => ['driver'=>'eloquent','model'=>App\Models\FactoryAccount::class],
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,

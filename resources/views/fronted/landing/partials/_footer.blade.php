@@ -46,6 +46,8 @@
             <div>
                 <h4>{{ __('Policies') }}</h4>
                 <ul>
+                    <li>{{-- Phase 3/4: <a href="{{ route('fronted.catalog') }}">{{ __('catalog.title') }}</a> --}}</li>
+                    <li>{{-- Phase 3/4: <a href="{{ route('factory.login') }}">{{ __('catalog.factory_login') }}</a> --}}</li>
                     @forelse ($footerPolicies ?? [] as $policy)
                         <li><a href="{{ route('fronted.policies') }}#{{ $policy->slug }}">{{ $policy->title }}</a></li>
                     @empty

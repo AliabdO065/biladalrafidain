@@ -13,12 +13,38 @@ document.addEventListener('DOMContentLoaded', function () {
   var langSwitch = document.querySelector('.lk-lang-switch');
   if (langSwitch) {
     var langBtn = langSwitch.querySelector('.lk-lang-current');
+    langBtn.setAttribute('aria-expanded', 'false');
     langBtn.addEventListener('click', function (e) {
       e.stopPropagation();
       langSwitch.classList.toggle('open');
+      langBtn.setAttribute('aria-expanded', String(langSwitch.classList.contains('open')));
     });
     document.addEventListener('click', function () {
       langSwitch.classList.remove('open');
+      langBtn.setAttribute('aria-expanded', 'false');
+    });
+    langSwitch.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        langSwitch.classList.remove('open');
+        langBtn.setAttribute('aria-expanded', 'false');
+        langBtn.focus();
+      }
+    });
+  }
+
+  // Only hide reveal targets after an observer exists; content remains visible without JavaScript.
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('lk-reveal-pending');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.mk-feature, .mk-how, .mk-trust, .catalog-card, .catalog-factory-card').forEach(function (element) {
+      element.classList.add('lk-reveal', 'lk-reveal-pending');
+      revealObserver.observe(element);
     });
   }
 
@@ -72,8 +98,12 @@ document.addEventListener('DOMContentLoaded', function () {
       },
       body: new FormData(form),
     })
-      .then(function (res) { return res.json(); })
-      .then(function () {
+      .then(function (res) {
+        if (!res.ok) throw new Error('Callback request failed');
+        return res.json();
+      })
+      .then(function (data) {
+        if (!data.success) throw new Error('Callback request was not saved');
         showStep(4);
       })
       .catch(function () {

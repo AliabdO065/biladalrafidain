@@ -21,8 +21,8 @@
 
                 <div class="card mb-4" id="section-navbar">
                     <button class="card-header lk-collapse-toggle collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-navbar" aria-expanded="false" aria-controls="collapse-navbar">
-                        <span><i class="fa-solid fa-bars"></i> {{ __('Navbar') }}</span>
-                        <i class="fa-solid fa-chevron-down lk-collapse-caret"></i>
+                        <span><i class="fas fa-bars"></i> {{ __('Navbar') }}</span>
+                        <i class="fas fa-chevron-down lk-collapse-caret"></i>
                     </button>
                     <div class="collapse" id="collapse-navbar">
                         <div class="card-body">
@@ -33,30 +33,7 @@
                             @include('dashboard.landing.partials._translatable-field', ['name'=>'navbar_brand_text', 'label'=>__('Name in der Navigationsleiste'), 'values'=>$settings->translationsFor('navbar_brand_text'), 'required'=>false])
 
                             <h6 class="lk-settings-subhead">{{ __('Menüpunkte') }}</h6>
-                            <div class="mb-2 form-check">
-                                <input type="checkbox" class="form-check-input" id="nav_show_services" name="nav_show_services" value="1" {{ $settings->nav_show_services ? 'checked' : '' }}>
-                                <label class="form-check-label" for="nav_show_services">{{ __('Leistungen') }}</label>
-                            </div>
-                            <div class="mb-2 form-check">
-                                <input type="checkbox" class="form-check-input" id="nav_show_steps" name="nav_show_steps" value="1" {{ $settings->nav_show_steps ? 'checked' : '' }}>
-                                <label class="form-check-label" for="nav_show_steps">{{ __('Ablauf') }}</label>
-                            </div>
-                            <div class="mb-2 form-check">
-                                <input type="checkbox" class="form-check-input" id="nav_show_about" name="nav_show_about" value="1" {{ $settings->nav_show_about ? 'checked' : '' }}>
-                                <label class="form-check-label" for="nav_show_about">{{ __('Über uns') }}</label>
-                            </div>
-                            <div class="mb-2 form-check">
-                                <input type="checkbox" class="form-check-input" id="nav_show_comparison" name="nav_show_comparison" value="1" {{ $settings->nav_show_comparison ? 'checked' : '' }}>
-                                <label class="form-check-label" for="nav_show_comparison">{{ __('Vergleich') }}</label>
-                            </div>
-                            <div class="mb-2 form-check">
-                                <input type="checkbox" class="form-check-input" id="nav_show_reviews" name="nav_show_reviews" value="1" {{ $settings->nav_show_reviews ? 'checked' : '' }}>
-                                <label class="form-check-label" for="nav_show_reviews">{{ __('Bewertungen') }}</label>
-                            </div>
-                            <div class="mb-2 form-check">
-                                <input type="checkbox" class="form-check-input" id="nav_show_faq" name="nav_show_faq" value="1" {{ $settings->nav_show_faq ? 'checked' : '' }}>
-                                <label class="form-check-label" for="nav_show_faq">{{ __('FAQ') }}</label>
-                            </div>
+                            <div class="settings-options">
                             <div class="mb-2 form-check">
                                 <input type="checkbox" class="form-check-input" id="nav_show_callback" name="nav_show_callback" value="1" {{ $settings->nav_show_callback ? 'checked' : '' }}>
                                 <label class="form-check-label" for="nav_show_callback">{{ __('Kontakt') }}</label>
@@ -69,14 +46,15 @@
                                 <input type="checkbox" class="form-check-input" id="nav_show_policies" name="nav_show_policies" value="1" {{ $settings->nav_show_policies ? 'checked' : '' }}>
                                 <label class="form-check-label" for="nav_show_policies">{{ __('Policies') }}</label>
                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="card mb-4" id="section-banner">
                     <button class="card-header lk-collapse-toggle collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-banner" aria-expanded="false" aria-controls="collapse-banner">
-                        <span><i class="fa-solid fa-triangle-exclamation"></i> {{ __('Warnbanner') }}</span>
-                        <i class="fa-solid fa-chevron-down lk-collapse-caret"></i>
+                        <span><i class="fas fa-exclamation-triangle"></i> {{ __('Warnbanner') }}</span>
+                        <i class="fas fa-chevron-down lk-collapse-caret"></i>
                     </button>
                     <div class="collapse" id="collapse-banner">
                         <div class="card-body">
@@ -91,8 +69,8 @@
 
                 <div class="card mb-4" id="section-logo">
                     <button class="card-header lk-collapse-toggle collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-logo" aria-expanded="false" aria-controls="collapse-logo">
-                        <span><i class="fa-solid fa-phone"></i> {{ __('Logo & Telefon') }}</span>
-                        <i class="fa-solid fa-chevron-down lk-collapse-caret"></i>
+                        <span><i class="fas fa-phone"></i> {{ __('Logo & Telefon') }}</span>
+                        <i class="fas fa-chevron-down lk-collapse-caret"></i>
                     </button>
                     <div class="collapse" id="collapse-logo">
                         <div class="card-body">
@@ -117,8 +95,8 @@
 
                 <div class="card mb-4" id="section-rating">
                     <button class="card-header lk-collapse-toggle collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-rating" aria-expanded="false" aria-controls="collapse-rating">
-                        <span><i class="fa-solid fa-star"></i> {{ __('Bewertung (Sticky-Bar)') }}</span>
-                        <i class="fa-solid fa-chevron-down lk-collapse-caret"></i>
+                        <span><i class="fas fa-star"></i> {{ __('Bewertung (Sticky-Bar)') }}</span>
+                        <i class="fas fa-chevron-down lk-collapse-caret"></i>
                     </button>
                     <div class="collapse" id="collapse-rating">
                         <div class="card-body">
@@ -134,8 +112,8 @@
 
                 <div class="card mb-4" id="section-footer">
                     <button class="card-header lk-collapse-toggle collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-footer" aria-expanded="false" aria-controls="collapse-footer">
-                        <span><i class="fa-solid fa-building"></i> {{ __('Footer') }}</span>
-                        <i class="fa-solid fa-chevron-down lk-collapse-caret"></i>
+                        <span><i class="fas fa-building"></i> {{ __('Footer') }}</span>
+                        <i class="fas fa-chevron-down lk-collapse-caret"></i>
                     </button>
                     <div class="collapse" id="collapse-footer">
                         <div class="card-body">
